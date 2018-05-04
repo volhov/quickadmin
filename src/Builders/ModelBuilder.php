@@ -9,7 +9,7 @@ use Laraveldaily\Quickadmin\Models\Menu;
 class ModelBuilder
 {
     // Model namespace
-    private $namespace = 'App';
+    private $namespace = 'App\Modules\$MODEL$\Models';
     // Template
     private $template;
     // Names
@@ -211,6 +211,7 @@ class ModelBuilder
         $this->folder = $this->className;
         $fileName = $this->className . '.php';
         $this->fileName = $fileName;
+        $this->namespace = str_replace(['$MODEL$'], $this->className, $this->namespace);
     }
 
     /**
