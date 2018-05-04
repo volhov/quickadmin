@@ -4,8 +4,8 @@ namespace $NAMESPACE$;
 
 use App\Http\Controllers\Controller;
 
-class $CLASS$ extends Controller {
-
+class $CLASS$ extends Controller
+{
     /**
      * Index page
      *
@@ -17,5 +17,4 @@ class $CLASS$ extends Controller {
     {
         return view('admin.$COLLECTION$.index');
     }
-
 }

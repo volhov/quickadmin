@@ -8,15 +8,16 @@ $PASSWORDHASH_CALL$
 $DATEPICKERS_CALL$
 $SOFT_DELETE_CALL$
 
-class $CLASS$ extends Model {
-
+class $CLASS$ extends Model
+{
     $SOFT_DELETE_USE$
 
     $SOFT_DELETE_DATES$
 
-    protected $table    = '$TABLENAME$';
+    protected $table = '$TABLENAME$';
     
     protected $fillable = [$FILLABLE$];
+
     $ENUMS$
 
     public static function boot()
@@ -25,6 +26,7 @@ class $CLASS$ extends Model {
 
         $CLASS$::observe(new UserActionsObserver);
     }
+
     $RELATIONSHIPS$
     $PASSWORDHASH$
     $DATEPICKERS$

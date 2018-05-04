@@ -71,6 +71,7 @@ class ControllerBuilder
     {
         $template = str_replace([
             '$NAMESPACE$',
+            '$FOLDER$',
             '$MODEL$',
             '$CREATEREQUESTNAME$',
             '$UPDATEREQUESTNAME$',
@@ -87,6 +88,7 @@ class ControllerBuilder
             '$ENUM$',
         ], [
             $this->namespace,
+            $this->modelName,
             $this->modelName,
             $this->createRequestName,
             $this->updateRequestName,
@@ -170,15 +172,15 @@ class ControllerBuilder
                     }
                     $menu = $menus[$field->relationship_id];
                     $relationships .= '$'
-                                      . $field->relationship_name
-                                      . ' = '
-                                      . ucfirst(Str::camel($menu->name))
-                                      . '::pluck("'
-                                      . $field->relationship_field
-                                        //null list select values like array_values so, if you 
-                                        //want delete one row it will not match the value with the actual id.
-                                      . '", "id")->prepend(\'Please select\', 0);'
-                                      . "\r\n";
+                        . $field->relationship_name
+                        . ' = '
+                        . ucfirst(Str::camel($menu->name))
+                        . '::pluck("'
+                        . $field->relationship_field
+                        //null list select values like array_values so, if you
+                        //want delete one row it will not match the value with the actual id.
+                        . '", "id")->prepend(\'Please select\', 0);'
+                        . "\r\n";
                 }
             }
 
@@ -285,8 +287,7 @@ class ControllerBuilder
     {
         $path = implode(DIRECTORY_SEPARATOR, ['Http', 'Controllers', 'Admin']);
         if (! file_exists(app_path($path))) {
-            mkdir(app_path($path));
-            chmod(app_path($path), 0777);
+            mkdir(app_path($path, 0777, true));
         }
         $pathTofile = implode(DIRECTORY_SEPARATOR, [$path, $this->fileName]);
         file_put_contents(app_path($pathTofile), $template);

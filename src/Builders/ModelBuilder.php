@@ -234,10 +234,10 @@ class ModelBuilder
      */
     private function createPath()
     {
-        $folder = app_path($this->getModelPath());
+        $folder = app_path($this->getPathToModel());
+
         if (!file_exists($folder)) {
-            mkdir($folder);
-            chmod($folder, 0777);
+            mkdir($folder, 0777, true);
         }
     }
 

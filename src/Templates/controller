@@ -12,12 +12,12 @@ use Illuminate\Http\Request;
 $FILETRAIT$
 $RELATIONSHIP_NAMESPACES$
 
-class $CLASS$ extends Controller {
-
+class $CLASS$ extends Controller
+{
     /**
      * Display a listing of $COLLECTION$
      *
-     * @param Request $request
+     * @param Request $request Request object.
      *
      * @return \Illuminate\View\View
      */
@@ -43,7 +43,9 @@ class $CLASS$ extends Controller {
     /**
      * Store a newly created $RESOURCE$ in storage.
      *
-     * @param $CREATEREQUESTNAME$|Request $request
+     * @param $CREATEREQUESTNAME$|Request $request Request object
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store($CREATEREQUESTNAME$ $request)
     {
@@ -56,7 +58,8 @@ class $CLASS$ extends Controller {
     /**
      * Show the form for editing the specified $RESOURCE$.
      *
-     * @param  int  $id
+     * @param int $id Entity id
+     *
      * @return \Illuminate\View\View
      */
     public function edit($id)
@@ -69,9 +72,11 @@ class $CLASS$ extends Controller {
 
     /**
      * Update the specified $RESOURCE$ in storage.
-     * @param $UPDATEREQUESTNAME$|Request $request
      *
-     * @param  int  $id
+     * @param $UPDATEREQUESTNAME$|Request $request
+     * @param int $id Entity id
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id, $UPDATEREQUESTNAME$ $request)
     {
@@ -87,7 +92,9 @@ class $CLASS$ extends Controller {
     /**
      * Remove the specified $RESOURCE$ from storage.
      *
-     * @param  int  $id
+     * @param int $id Entity id
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
@@ -98,9 +105,10 @@ class $CLASS$ extends Controller {
 
     /**
      * Mass delete function from index page
-     * @param Request $request
      *
-     * @return mixed
+     * @param Request $request Request object.
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function massDelete(Request $request)
     {
@@ -113,5 +121,4 @@ class $CLASS$ extends Controller {
 
         return redirect()->route(config('quickadmin.route').'.$COLLECTION$.index');
     }
-
 }
