@@ -9,6 +9,6 @@
         <div class="portlet-body">
             {{ trans('quickadmin::templates.templates-customView_index-welcome_custom_view') }}
         </div>
-	</div>
+    </div>
 
 @endsection

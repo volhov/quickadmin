@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 
 class $CLASS$ extends Controller {
 
-	/**
-	 * Index page
-	 *
+    /**
+     * Index page
+     *
      * @param Request $request
      *
      * @return \Illuminate\View\View
-	 */
-	public function index()
+     */
+    public function index()
     {
-		return view('admin.$COLLECTION$.index');
-	}
+        return view('admin.$COLLECTION$.index');
+    }
 
 }

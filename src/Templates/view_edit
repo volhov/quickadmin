@@ -7,11 +7,11 @@
         <h1>{{ trans('quickadmin::templates.templates-view_edit-edit') }}</h1>
 
         @if ($errors->any())
-        	<div class="alert alert-danger">
-        	    <ul>
+            <div class="alert alert-danger">
+                <ul>
                     {!! implode('', $errors->all('<li class="error">:message</li>')) !!}
                 </ul>
-        	</div>
+            </div>
         @endif
     </div>
 </div>

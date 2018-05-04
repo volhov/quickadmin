@@ -1,4 +1,5 @@
 <?php
+
 namespace Laraveldaily\Quickadmin\Builders;
 
 use Illuminate\Support\Str;
@@ -27,22 +28,24 @@ class ModelBuilder
     private $datetime;
     // Have enum?
     private $enum;
+    private $folder;
 
     /**
      * Build our model file
      */
     public function build()
     {
-        $cache          = new QuickCache();
-        $cached         = $cache->get('fieldsinfo');
-        $this->template = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR . 'model';
-        $this->name     = $cached['name'];
-        $this->fields   = $cached['fields'];
-        $this->soft     = $cached['soft_delete'];
+        $cache = new QuickCache();
+        $cached = $cache->get('fieldsinfo');
+        $this->template =
+            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR . 'model';
+        $this->name = $cached['name'];
+        $this->fields = $cached['fields'];
+        $this->soft = $cached['soft_delete'];
         $this->password = $cached['password'];
-        $this->date     = $cached['date'];
+        $this->date = $cached['date'];
         $this->datetime = $cached['datetime'];
-        $this->enum     = $cached['enum'];
+        $this->enum = $cached['enum'];
         $this->names();
         $template = (string)$this->loadTemplate();
         $template = $this->buildParts($template);
@@ -62,16 +65,16 @@ class ModelBuilder
      *
      * @param $template
      *
-     * @return mixed
+     * @return string
      */
-    private function buildParts($template)
+    private function buildParts($template): string
     {
         $camelName = Str::camel($this->name);
         // Insert table names
         $tableName = strtolower($camelName);
         if ($this->soft == 1) {
             $soft_call = 'use Illuminate\Database\Eloquent\SoftDeletes;';
-            $soft_use  = 'use SoftDeletes;';
+            $soft_use = 'use SoftDeletes;';
             $soft_date = '/**
     * The attributes that should be mutated to dates.
     *
@@ -80,25 +83,26 @@ class ModelBuilder
     protected $dates = [\'deleted_at\'];';
         } else {
             $soft_call = '';
-            $soft_use  = '';
+            $soft_use = '';
             $soft_date = '';
         }
-        $template = str_replace([
-            '$NAMESPACE$',
-            '$SOFT_DELETE_CALL$',
-            '$SOFT_DELETE_USE$',
-            '$SOFT_DELETE_DATES$',
-            '$TABLENAME$',
-            '$CLASS$',
-            '$FILLABLE$',
-            '$RELATIONSHIPS$',
-            '$PASSWORDHASH_CALL$',
-            '$PASSWORDHASH$',
-            '$DATEPICKERS_CALL$',
-            '$DATEPICKERS$',
-            '$DATETIMEPICKERS$',
-            '$ENUMS$',
-        ], [
+        $template = str_replace(
+            [
+                '$NAMESPACE$',
+                '$SOFT_DELETE_CALL$',
+                '$SOFT_DELETE_USE$',
+                '$SOFT_DELETE_DATES$',
+                '$TABLENAME$',
+                '$CLASS$',
+                '$FILLABLE$',
+                '$RELATIONSHIPS$',
+                '$PASSWORDHASH_CALL$',
+                '$PASSWORDHASH$',
+                '$DATEPICKERS_CALL$',
+                '$DATEPICKERS$',
+                '$DATETIMEPICKERS$',
+                '$ENUMS$',
+            ], [
             $this->namespace,
             $soft_call,
             $soft_use,
@@ -113,27 +117,29 @@ class ModelBuilder
             $this->date > 0 ? $this->datepickers() : '',
             $this->datetime > 0 ? $this->datetimepickers() : '',
             $this->enum > 0 ? $this->enum() : '',
-        ], $template);
+        ], $template
+        );
 
         return $template;
     }
 
     /**
      * Build model fillables
+     *
      * @return string
      */
-    private function buildFillables()
+    private function buildFillables(): string
     {
-        $used      = [];
+        $used = [];
         $fillables = '';
-        $count     = count($this->fields);
+        $count = count($this->fields);
         // Move to the new line if we have more than one field
         if ($count > 1) {
             $fillables .= "\r\n";
         }
         foreach ($this->fields as $key => $field) {
             // Check if there is no duplication for radio and checkbox
-            if (! in_array($field->title, $used)) {
+            if (!in_array($field->title, $used)) {
                 if ($count > 1) {
                     $fillables .= '          '; // Add formatting space to the model
                 }
@@ -164,28 +170,31 @@ class ModelBuilder
 
     /**
      * Build model relationships
+     *
      * @return string
      */
-    private function buildRelationships()
+    private function buildRelationships(): string
     {
-        $menus         = Menu::all()->keyBy('id');
-        $used          = [];
+        $menus = Menu::all()->keyBy('id');
+        $used = [];
         $relationships = '';
         foreach ($this->fields as $key => $field) {
-            if (! in_array($field->title, $used) && $field->type == 'relationship') {
-                $menu    = $menus[$field->relationship_id];
+            if (!in_array($field->title, $used) && $field->type == 'relationship') {
+                $menu = $menus[$field->relationship_id];
                 $relLine = '
     public function $RELATIONSHIP$()
     {
         return $this->hasOne(\'App\$RELATIONSHIP_MODEL$\', \'id\', \'$RELATIONSHIP$_id\');
     }' . "\r\n\r\n";
-                $relLine = str_replace([
-                    '$RELATIONSHIP$',
-                    '$RELATIONSHIP_MODEL$'
-                ], [
+                $relLine = str_replace(
+                    [
+                        '$RELATIONSHIP$',
+                        '$RELATIONSHIP_MODEL$'
+                    ], [
                     strtolower($menu->name),
                     ucfirst(Str::camel($menu->name))
-                ], $relLine);
+                ], $relLine
+                );
                 $relationships .= $relLine;
             }
         }
@@ -199,9 +208,37 @@ class ModelBuilder
     private function names()
     {
         $this->className = ucfirst(Str::camel($this->name));
-
-        $fileName       = $this->className . '.php';
+        $this->folder = $this->className;
+        $fileName = $this->className . '.php';
         $this->fileName = $fileName;
+    }
+
+    /**
+     * @return string
+     */
+    private function getPathToModel(): string
+    {
+        return implode(DIRECTORY_SEPARATOR, ['Modules', $this->folder, 'Models']);
+    }
+
+    /**
+     * @return string
+     */
+    private function getModelPath(): string
+    {
+        return implode(DIRECTORY_SEPARATOR, [$this->getPathToModel(), $this->fileName]);
+    }
+
+    /**
+     * @return void
+     */
+    private function createPath()
+    {
+        $folder = app_path($this->getModelPath());
+        if (!file_exists($folder)) {
+            mkdir($folder);
+            chmod($folder, 0777);
+        }
     }
 
     /**
@@ -209,10 +246,14 @@ class ModelBuilder
      */
     private function publish($template)
     {
-        file_put_contents(app_path($this->fileName), $template);
+        $this->createPath();
+        file_put_contents(app_path($this->getModelPath()), $template);
     }
 
-    private function passwordHash()
+    /**
+     * @return string
+     */
+    private function passwordHash(): string
     {
         $passwordHashes = '';
         foreach ($this->fields as $field) {
@@ -232,7 +273,10 @@ class ModelBuilder
         return $passwordHashes;
     }
 
-    private function datepickers()
+    /**
+     * @return string
+     */
+    private function datepickers(): string
     {
         $dates = '';
         foreach ($this->fields as $field) {
@@ -271,7 +315,10 @@ class ModelBuilder
         return $dates;
     }
 
-    private function datetimepickers()
+    /**
+     * @return string
+     */
+    private function datetimepickers(): string
     {
         $dates = '';
         foreach ($this->fields as $field) {
@@ -312,14 +359,15 @@ class ModelBuilder
 
     /**
      * Generate enum model
+     *
      * @return string
      */
-    public function enum()
+    public function enum(): string
     {
         $return = "\r\n";
         foreach ($this->fields as $field) {
             if ($field->type == 'enum') {
-                $values      = '';
+                $values = '';
                 $field->enum = explode(',', $field->enum);
                 foreach ($field->enum as $val) {
                     // Remove first whitespace

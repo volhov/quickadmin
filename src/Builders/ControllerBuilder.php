@@ -268,13 +268,13 @@ class ControllerBuilder
      */
     private function names()
     {
-        $camelName               = ucfirst(Str::camel($this->name));
-        $this->className         = $camelName . 'Controller';
-        $this->modelName         = $camelName;
+        $camelName = ucfirst(Str::camel($this->name));
+        $this->className = $camelName . 'Controller';
+        $this->modelName = $camelName;
         $this->createRequestName = 'Create' . $camelName . 'Request';
         $this->updateRequestName = 'Update' . $camelName . 'Request';
 
-        $fileName       = $this->className . '.php';
+        $fileName = $this->className . '.php';
         $this->fileName = $fileName;
     }
 
@@ -283,12 +283,13 @@ class ControllerBuilder
      */
     private function publish($template)
     {
-        if (! file_exists(app_path('Http' . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . 'Admin'))) {
-            mkdir(app_path('Http' . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . 'Admin'));
-            chmod(app_path('Http' . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . 'Admin'), 0777);
+        $path = implode(DIRECTORY_SEPARATOR, ['Http', 'Controllers', 'Admin']);
+        if (! file_exists(app_path($path))) {
+            mkdir(app_path($path));
+            chmod(app_path($path), 0777);
         }
-        file_put_contents(app_path('Http' . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . 'Admin' . DIRECTORY_SEPARATOR . $this->fileName),
-            $template);
+        $pathTofile = implode(DIRECTORY_SEPARATOR, [$path, $this->fileName]);
+        file_put_contents(app_path($pathTofile), $template);
     }
 
     public function enum()
