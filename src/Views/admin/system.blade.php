@@ -21,7 +21,7 @@
                 </thead>
 
                 <tbody>
-                @foreach($cacheConfig as $operation => $title)
+                @foreach($systemCommandConfig as $operation => $title)
                     <tr>
                         <td>{{ $title }}</td>
                         <td>
