@@ -39,7 +39,8 @@ class QuickadminSystemController extends Controller
     {
         $systemCommandConfig = config('quickadmin.systemcommnad');
         if ($command == 'all') {
-            foreach ($systemCommandConfig as $command) {
+            $cacheCommandConfig = config('quickadmin.cache');
+            foreach ($cacheCommandConfig as $command) {
                 \Artisan::call($command);
             }
         } elseif (array_key_exists($command, $systemCommandConfig)) {
