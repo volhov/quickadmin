@@ -34,7 +34,8 @@ trait AdminPermissionsTrait
             'menu',
             'users',
             'roles',
-            'actions'
+            'actions',
+            'system',
         ];
         if (in_array($route[0], $official)) {
             return [$role, config('quickadmin.defaultRole')];

@@ -5,6 +5,11 @@ use App\Http\Controllers\Controller;
 use Laraveldaily\Quickadmin\Models\UsersLogs;
 use Yajra\Datatables\Datatables;
 
+/**
+ * Class UserActionsController
+ *
+ * @package Laraveldaily\Quickadmin\Controllers
+ */
 class UserActionsController extends Controller
 {
     /**
@@ -17,6 +22,9 @@ class UserActionsController extends Controller
         return view('qa::logs.index');
     }
 
+    /**
+     * @return mixed
+     */
     public function table()
     {
         return Datatables::of(UsersLogs::with('users')->orderBy('id', 'desc'))->make(true);

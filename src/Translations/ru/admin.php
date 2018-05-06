@@ -52,4 +52,10 @@ return [
   'users-controller-successfully_updated' => 'Пользователь успешно отредактирован!',  
   'users-controller-successfully_deleted' => 'Пользователь успешно удален!',
 
+  'system-cache_flush-all' => 'Flush All Cache',
+  'system-execute' => 'Execute Command',
+  'system-tile' => 'System Actions',
+  'system-are_you_sure' => 'Are you sure? ',
+  'system-management' => 'System Management',
+  'partials-sidebar-system-management' => 'System Management',
 ];

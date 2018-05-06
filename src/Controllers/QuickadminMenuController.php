@@ -18,7 +18,6 @@ use Laraveldaily\Quickadmin\Models\Menu;
 
 class QuickadminMenuController extends Controller
 {
-
     /**
      * Quickadmin menu list page
      * @return \BladeView|bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -80,10 +79,9 @@ class QuickadminMenuController extends Controller
         $models = [];
         foreach (Menu::whereNotIn('menu_type', [2, 3])->get() as $menu) {
             // We are having a default User model
+            $tableName = strtolower($menu->name);
             if ($menu->title == 'User' && $menu->is_menu == 0) {
                 $tableName = 'users';
-            } else {
-                $tableName = strtolower($menu->name);
             }
             $models[$menu->id] = Schema::getColumnListing($tableName);
         }

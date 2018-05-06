@@ -80,5 +80,11 @@ return [
     'roles-controller-successfully_updated' => '¡El rol se actualizó exitosamente!',
     'roles-controller-successfully_deleted' => '¡El rol se eliminó exitosamente!',
 
+    'system-cache_flush-all' => 'Flush All Cache',
+    'system-execute' => 'Execute Command',
+    'system-tile' => 'System Actions',
+    'system-are_you_sure' => 'Are you sure? ',
+    'system-management' => 'System Management',
+    'partials-sidebar-system-management' => 'System Management',
 ];
 
