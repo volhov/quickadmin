@@ -32,7 +32,7 @@
                 <li @if(Request::path() == config('quickadmin.route').'/system') class="active" @endif>
                     <a href="{{ url(config('quickadmin.route').'/system') }}">
                         <i class="fa fa-users"></i>
-                        <span class="title">{{ trans('quickadmin::partials-sidebar-system-management') }}</span>
+                        <span class="title">{{ trans('quickadmin::admin.partials-sidebar-system-management') }}</span>
                     </a>
                 </li>
             @endif
