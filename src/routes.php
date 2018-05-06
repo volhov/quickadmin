@@ -53,13 +53,13 @@ Route::group([
             'as'   => 'menu',
             'uses' => 'QuickadminMenuController@index'
         ]);
-        Route::get(config('quickadmin.route') . '/list', [
+        Route::get(config('quickadmin.route') . '/system', [
             'as'   => 'system',
             'uses' => 'QuickadminSystemController@index'
         ]);
         Route::post(config('quickadmin.route') . '/system/execute/{command}', [
             'as'   => 'system.execute',
-            'uses' => 'QuickadminSystemController@flush'
+            'uses' => 'QuickadminSystemController@execute'
         ]);
         // Menu routing
         Route::get(config('quickadmin.route') . '/menu', [
